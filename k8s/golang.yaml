@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golang
+  template:
+    metadata:
+      labels:
+        app: golang
+    spec:
+      containers:
+      - name: golang
+        image: golang-golang:latest # Replace with your actual Go image name
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          value: "root:root@tcp(mysql:3306)/testdb"  # Connection string for MySQL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30080  # Adjust as needed
+  selector:
+    app: golang

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs
+        image: golang-nodejs:latest # Change this to your app's image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: "mysql://root:root@mysql:3306/testdb"  # Example env variable
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30090  # Ensure this is in the valid range
+  selector:
+    app: nodejs

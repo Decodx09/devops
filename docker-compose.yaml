@@ -1,0 +1,31 @@
+version: '3.8'  # or whatever version you're using
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nodejs:
+    build:
+      context: ./nodejs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+
+  golang:
+    build:
+      context: ./golang
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql

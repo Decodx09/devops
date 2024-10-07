@@ -1,0 +1,38 @@
+# Binaries
+/bin/
+/build/
+/out/
+
+# Go modules
+/go.mod
+/go.sum
+
+# Dependency directories
+/vendor/
+
+# Test binary, build artifacts, etc.
+*.test
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Coverage files
+*.cov
+
+# IDE or Editor specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
