@@ -11,8 +11,11 @@ pipeline {
         stage('Build Golang App') {
             steps {
                 script {
-                    docker.image('golang:1.23').inside {
-                        sh 'go build -o myapp .'
+                    // Use the full path to the Docker binary
+                    withEnv(['PATH=/usr/local/bin:$PATH']) { // Add Docker path to the environment
+                        docker.image('golang:1.23').inside {
+                            sh '/usr/local/bin/docker run --rm -v $PWD:/app -w /app golang:1.23 go build -o myapp .'
+                        }
                     }
                 }
             }
@@ -21,10 +24,11 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    docker.image('golang:1.23').inside {
-                        sh 'go test .'
+                    withEnv(['PATH=/usr/local/bin:$PATH']) { // Add Docker path to the environment
+                        docker.image('golang:1.23').inside {
+                            sh '/usr/local/bin/docker run --rm -v $PWD:/app -w /app golang:1.23 go test .'
+                        }
                     }
-
                 }
             }
         }
