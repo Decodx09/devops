@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/Decodx09/devops.git'
+            }
+        }
+
+        stage('Build Golang App') {
+            steps {
+                script {
+                    docker.image('golang:1.23').inside {
+                        sh 'go build -o myapp .'
+                    }
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    docker.image('golang:1.23').inside {
+                        sh 'go test .'
+                    }
+
+                }
+            }
+        }
+    }
+}
